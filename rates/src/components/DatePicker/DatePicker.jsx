@@ -1,6 +1,6 @@
 import React from "react";
 import DatePicker from "react-datepicker";
-import { addDays } from 'date-fns';
+import { addDays } from "date-fns";
 import "react-datepicker/dist/react-datepicker.css";
 
 // CSS Modules, react-datepicker-cssmodules.css
@@ -8,14 +8,13 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const DatePick = (props) => {
   // const [startDate, setStartDate] = useState(new Date());
-  const {date, handleDateChange} = props
+  const { date, handleDateChange } = props;
   return (
-    <DatePicker 
+    <DatePicker
       selected={date}
-      onChange={date => handleDateChange(date)}
+      onChange={(date) => handleDateChange(date)}
       dateFormat="dd/MM/yyyy"
       maxDate={addDays(new Date(), 0)}
-      
     />
   );
 };

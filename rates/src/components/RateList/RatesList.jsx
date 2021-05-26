@@ -1,42 +1,54 @@
-import React, { useState, useEffect} from 'react';
-import List from '../List/List';
+import React, { useState, useEffect } from "react";
+import List from "../List/List";
+import Btn from "../Btn/Btn";
 
-export default function RatesList (props){
-    
-    // const date = format(props.date, 'yyyy-MM-dd');
-    // const {data} = useFetch(`http://api.exchangeratesapi.io/v1/${date}?access_key=c24d7d37337c132cbf80093380586e7c`);
-    //const [url, setUrl] = useState();
-    //console.log(data, error, loading);
-    const {data} = props;
-    const [rates, setRates] = useState();
-    const [showingRates, setShowingRates] = useState();
-    
-    useEffect(()=>{
-        if(data){
-            //setRates(data.rates.filter(rates => !showingRates.includes(rates)));
-            setRates(data.rates);
-            // setShowingRates(data.rates.filter(rates => ))
-        }
-        
-    }, [data, rates]);
-    
-    console.log(rates);
-    // const seeMore = () => {
-    //     let newarr = [...showingRates];
-    //     for(var i = 0; (i <= 3 && i < rates.length);) {
-    //         newarr.push(rates[0])
-    //         rates.splice(0, 1);
-    //         i++;
-    //     };
-    //     setShowingRates(newarr);
-    //     //console.log({rates, showingRates});
-    // };
+export default function RatesList(props) {
+  const { data } = props;
+  const [rates, setRates] = useState();
+  const [showingRates, setShowingRates] = useState();
 
-    return(
-        <div>
-            {/* {showingRates && <List list={rates}/>} */}
-            {rates && <List list={rates}/>}
-            {/* <button className="btn2" onClick={seeMore}>Ver más cotizaciones</button> */}
-        </div>
-    )
-};
+  useEffect(() => {
+    const defRates = ["EUR", "USD", "GBP", "CAD"];
+
+    if (data) {
+      // setRates(data.rates.filter(rates => !showingRates.includes(rates)));
+      // setRates(data.rates);
+
+      const filterShowing = Object.keys(data.rates)
+        .filter((key) => defRates.includes(key))
+        .reduce((obj, key) => {
+          return {
+            ...obj,
+            [key]: data.rates[key],
+          };
+        }, {});
+
+      const filterRates = Object.keys(data.rates)
+        .filter((key) => !defRates.includes(key))
+        .reduce((obj, key) => {
+          return {
+            ...obj,
+            [key]: data.rates[key],
+          };
+        }, {});
+
+      setShowingRates(filterShowing);
+
+      setRates(filterRates);
+    }
+  }, [data]);
+
+  //   console.log(rates);
+  //   console.log(showingRates);
+
+  const seeMore = () => {
+    setShowingRates(Object.assign({ ...showingRates }, rates));
+  };
+
+  return (
+    <div>
+      {showingRates && <List list={showingRates} />}
+      <Btn secondary btnText="Ver más cotizaciones" handleBtnClick={seeMore} />
+    </div>
+  );
+}

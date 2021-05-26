@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Select from "react-select";
 import {useFetch} from "../../hooks/useFetch";
 
-
 export default function SelectList (props) {
     const {data} = useFetch("http://api.exchangeratesapi.io/v1/symbols?access_key=c24d7d37337c132cbf80093380586e7c");
     // const {data} = props;
@@ -23,11 +22,12 @@ export default function SelectList (props) {
     }));
 
     return(
-        <Select 
+        <Select
             placeholder={props.baseSelected}
             value={options.filter(obj => obj.value === props.baseSelected)}
             options={options}
             onChange={e => props.handleSelectorChange(e.value)}
+            
         />
     )
 };
